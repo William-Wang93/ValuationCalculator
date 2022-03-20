@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<link
+href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;700&display=swap"
+rel="stylesheet"
+/>
+<link rel="stylesheet" href="./style1.css" />
+<script defer src="script.js"></script>
+<script>
+
+    function computeValue(){
+    var amount0 = parseFloat(document.getElementById('Goal').value.replace(/,/g,'')); 
+    var amount1 = parseFloat(document.getElementById('MW2022').value); 
+    var amount2 = parseFloat(document.getElementById('MW2023').value);
+    var amount3 =parseFloat(document.getElementById('MW2024').value);
+    var amount4 =parseFloat(document.getElementById('Revenue Rate').value);
+    var amount5 =parseFloat(document.getElementById('Growth').value);
+    var amount6 =parseFloat(document.getElementById('Cost of Capital').value);
+    var amount7 =parseFloat(document.getElementById('operating').value);
+    var valuation = Math.round(((amount1*amount4*1000000*(amount7/100))/Math.pow((1+amount6),1))+((amount2*amount4*1000000*(amount7/100))/Math.pow((1+amount6),2))+
+    ((amount3*amount4*1000000*(amount7/100))/Math.pow(1+amount6,3))+((((amount3*amount4*1000000*(amount7/100))*(1+(amount5/100)))/(amount6-amount5))/Math.pow((1+amount6),3)),0);
+    document.getElementById('Output').innerHTML = valuation.toLocaleString();
+    document.getElementById("bar").style.height = (valuation*100/amount0) + "%";
+    console.log((valuation*100/amount0)+"%")
+    document.getElementById('goalp').innerHTML = (Math.round((valuation*100/amount0))+"%").toLocaleString();
+    console.log (amount0)
+    
+   
+    /***
+    Terminal value =  (((amount3*amount4)*(1+(amount5/100)))/(amount6-amount5))/Math.pow((1+amount6),3);
+
+    2022 Value = (amount1*amount4)/Math.pow((1+amount6),1)
+    2023 value = (amount2*amount4)/Math.pow((1+amount6),2)
+    2024 value = (amount3*amount4)/Math.pow(1+amount6,3)
+
+    ***/
+
+
+
+}
+
+
+</script>
+<body>
+    <div id="wrapper">
+    <div class="header">
+       
+        <button id="helpbutton"data-modal-target="#modal">
+        <svg xmlns="http://www.w3.org/2000/svg" height="24" viewBox="0 0 24 24" width="24">
+            <path fill="var(--color-tone-1)" d="M11 18h2v-2h-2v2zm1-16C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm0-14c-2.21 0-4 1.79-4 4h2c0-1.1.9-2 2-2s2 .9 2 2c0 2-3 1.75-3 5h2c0-2.25 3-2.5 3-5 0-2.21-1.79-4-4-4z"></path>
+          </svg>
+        </button>
+    <h1> Valuation Calculator</h1>
+      
+    </div>
+    <main>
+        <div class="modal" id="modal">
+            <div class="modal-header">
+              <div class="title">How to Use</div>
+              <button data-close-button class="close-button">&times;</button>
+            </div>
+            <div class="modal-body">
+
+              <p>This is a calulator for <b>valuing a new business line</b> for a solar company using a DCF Model </p>
+              <br>
+              <p>The business line is customer acquisition for a 3rd party, where you are paid by the number of customers you acquire to subscribe to your client's solar farm. Customers are measured
+                  by their energy usage of the solar farm, which is counted in Megawatts (MWs). 
+              </p>
+              <br>
+              <p><b>Valuation Goal</b> measures how much you want your business line to be worth, which, when compared to <b>Valuation Output</b> on the bottom - which is informed by the MW, Margin, and Valuation inputs - loads the progess bar. For instance, a Valuation Goal of $100 with a Valuation Output of $120 means the progress bar will show 120%.
+            </p>
+            <br>
+              <p>
+              <b>MW Inputs</b> allow you to determine the number of MWs that will be acquired by this business line from 2022-2024.
+            </p>
+              <br>
+
+              <p><b>Revenue Rate </b> is the number of dollars you generated per MW (no need for the $ sign in inputs).</p>
+              <br>
+              <p><b>Operating Margin</b> is the revenue % that is converted to cashflow. For instance, a 65% margin implies 35% of revenue is lost due to expenses.</p>
+              <br>
+              <p><b>Discount Rate </b> measures the cost of capital for the business line - how much it costs to get debt and equity financing for the project. It's treated as an interest rate on future cash inflows to conver them into current
+            cash flows. </p>
+              <br>
+              <p><b>Growth Rate</b> is how much your cash flows post 2024 - which constitute the terminal value of your business line - grow year over year. </p>
+            </div>
+          </div>
+
+          <div id="overlay"></div>
+
+        <div class="glass">
+            <div class="dashboard"> 
+                <div class="loadbar">
+                    
+                    <div id="bar" style='height:10%;max-height: 100%;'></div>
+                    <div id="goalp">0%</div>
+                  </div>
+                  
+            </div>  
+            <div class="inputs">
+                
+                <h1 style="margin-top: 2%;">Valuation Goal</h1>
+                <div class="card">
+                    <div class="group">
+                    <label>Goal ($)</label>
+                    <input id="Goal" onchange="computeValue()">
+                    </div>
+                </div>
+           
+            <h1>MW Inputs</h1>
+            <div class="card">
+                <div class="group">
+                <label>2022 MWs</label>
+                <input id="MW2022" onchange="computeValue()">
+                </div>
+                <div class="group">
+                    <label>2023 MWs</label>
+                    <input id="MW2023" onchange="computeValue()">
+                    </div>
+                 <div class="group">
+                <label>2024 MWs</label>
+                <input id="MW2024" onchange="computeValue()">
+                </div>
+            </div>
+            <h1>Margin</h1>
+            <div class="card">
+                
+                <div class="group">
+                    <label>Revenue Rate ($/MW)</label>
+                    <input id="Revenue Rate" onchange="computeValue()">
+                </div>
+                <div class="group">
+                        <label>Operating Margin (%)</label>
+                        <input id="operating" onchange="computeValue()">
+                </div>
+            </div>
+            <h1>Valuation Inputs</h1>
+            <div class="card">
+                <div class="group">
+                    <label>Cost of Capital (%)</label>
+                    <input id="Cost of Capital" onchange="computeValue()">
+                </div>
+                <div class="group">
+                        <label>Discount Rate (%)</label>
+                        <input id="Growth" onchange="computeValue()">
+                </div>
+            </div>
+            <h1>Valuation Output ($)</h1>
+            <div class="card">
+            <div id="Output">
+               0
+            </div>
+        </div>
+        </div>
+        </div> 
+       
+    </main>
+</div>
+</body>
+</html>
